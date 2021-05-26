@@ -1,8 +1,21 @@
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => res.send('Home Page Route'));
-app.get('/about', (req, res) => res.send('About Page Route'));
-app.get('/endpoints', (req, res) => res.send('Portfolio Page Route'));
-app.get('/contact', (req, res) => res.send('Contact Page Route'));
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on ${port}, http://localhost:${port}`));
+'use strict';
+
+const bootstap = require('./src/config/bootstrap');
+const createServer =  require('./src/server/server');
+
+//start the server
+const start = async () => {
+	try {
+		await bootstap.init();
+
+		const server =  await createServer();
+		await server.start();
+
+		console.log('Server running at: ', server.info.uri);
+	} catch (error) {
+		console.log(error);
+		process.exit(1);
+	}
+};
+
+start();
